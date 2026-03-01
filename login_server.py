@@ -42,13 +42,14 @@ def callback():
 
     send_telegram("✅ Zerodha Login Successful 🚀")
 
-    @app.route("/daily-report")
+    return "✅ Login successful. Token securely stored."
+
+# 🔥 DAILY REPORT ROUTE (OUTSIDE callback)
+@app.route("/daily-report")
 def daily_report():
     pnl = "₹ 0 (Test Mode)"
     send_telegram(f"📊 Daily Report\nPnL: {pnl}")
     return "Report Sent"
-
-    return "✅ Login successful. Token securely stored."
 
 @app.route("/test")
 def test():
