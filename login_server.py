@@ -1,15 +1,29 @@
 from flask import Flask, request
 from kiteconnect import KiteConnect
 import os
+import requests
 from crypto_utils import encrypt_token
 
 app = Flask(__name__)
 
+# ===== ENV VARIABLES =====
 API_KEY = os.environ.get("API_KEY")
 API_SECRET = os.environ.get("API_SECRET")
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 kite = KiteConnect(api_key=API_KEY)
 
+# ===== TELEGRAM FUNCTION =====
+def send_telegram(msg):
+    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        requests.post(url, data={
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": msg
+        })
+
+# ===== ROUTES =====
 @app.route("/")
 def home():
     return f'<a href="{kite.login_url()}">Login with Zerodha</a>'
@@ -26,9 +40,15 @@ def callback():
     with open("secure_token.bin", "wb") as f:
         f.write(encrypted)
 
-    try:
-        send_telegram("✅ Zerodha Login Successful 🚀")
-    except Exception as e:
-        print("Telegram Error:", e)
+    send_telegram("✅ Zerodha Login Successful 🚀")
 
     return "✅ Login successful. Token securely stored."
+
+@app.route("/test")
+def test():
+    send_telegram("Flask Route Test 🚀")
+    return "OK"
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
