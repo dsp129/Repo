@@ -21,17 +21,14 @@ def callback():
     data = kite.generate_session(request_token, api_secret=API_SECRET)
     access_token = data["access_token"]
 
-  encrypted = encrypt_token(access_token)
+    encrypted = encrypt_token(access_token)
 
-with open("secure_token.bin", "wb") as f:
-    f.write(encrypted)
+    with open("secure_token.bin", "wb") as f:
+        f.write(encrypted)
 
-try:
-    send_telegram("✅ Zerodha Login Successful 🚀")
-except Exception as e:
-    print("Telegram Error:", e)
+    try:
+        send_telegram("✅ Zerodha Login Successful 🚀")
+    except Exception as e:
+        print("Telegram Error:", e)
 
-return "✅ Login successful. Token securely stored."
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    return "✅ Login successful. Token securely stored."
