@@ -1,0 +1,7 @@
+access_token.txt
+api_key.txt
+api_secret.txt
+telegram.txt
+Fernet encryption key..txt
+crypto.py
+__pycache__/
