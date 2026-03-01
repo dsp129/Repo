@@ -51,6 +51,11 @@ def daily_report():
     send_telegram(f"📊 Daily Report\nPnL: {pnl}")
     return "Report Sent"
 
+@app.route("/health")
+def health():
+    send_telegram("🟢 AlgoBot Running OK")
+    return "OK"
+
 @app.route("/test")
 def test():
     send_telegram("Flask Route Test 🚀")
